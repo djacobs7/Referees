@@ -1,7 +1,17 @@
-gameLogs=readRDS("~/Desktop/sports analysis/Referees/Data/gameLogs.Rda")
-seasonTotals=readRDS("~/Desktop/sports analysis/Referees/Data/seasonTotals.Rda")
 library('tidyr')
 library('dplyr')
+
+#hit source on Save.  Then Everytime we save the file, the entire script runs
+
+PROJECT_ROOT = "/Users/djacobs7/git/Referees"
+
+localPath <- function(path){
+  paste0( PROJECT_ROOT, '/', path)
+}
+
+gameLogsRaw=readRDS(localPath("/Data/gameLogs.Rda"))
+seasonTotalsRaw=readRDS(localPath("/Data/seasonTotals.Rda"))
+
 
 cleanupGameLogs <- function( gameLogs ){
   result = gameLogs %>%
@@ -37,8 +47,8 @@ cleanupSeasonTotals <- function( seasonTotals ){
     #Rename columns with wierd characters in them
     rename( HomePct = `Home%`, HomeWinPct = `HWin%`, PenPerG = `Pen/G`, YdsPerG = `Yds/G`,
             League_Average_HomePct = `League_Average_Home%`, League_Average_HomeWinPct = `League_Average_HWin%`, League_Average_PenPerG = `League_Average_Pen/G`, League_Average_YdsPerG = `League_Average_Yds/G`,
-            Relative_HomePct = `Relative_Home%`, Relative_HomeWinPct = `Relative_HWin%`, Relative_PenPerG = `Relative_Pen/G`, Relative_YdsPerG = `Relative_Yds/G`
-            
+            Relative_HomePct = `Relative_Home%`, Relative_HomeWinPct = `Relative_HWin%`, Relative_PenPerG = `Relative_Pen/G`, Relative_YdsPerG = `Relative_Yds/G`,
+            name = nameVec
             ) %>%
     
     mutate_each( funs(as.numeric(.)), HPen, VPen, Tot, Yds, ends_with('PenPerG'), ends_with('YdsPerG'), ends_with('HomePct'), ends_with('HomeWinPct')) %>%
@@ -55,3 +65,7 @@ cleanupSeasonTotals <- function( seasonTotals ){
 
   result
 }
+
+gameLogs = cleanupGameLogs( gameLogsRaw )
+seasonTotals = cleanupSeasonTotals( seasonTotalsRaw )
+
