@@ -1,0 +1,27 @@
+GameLogs file:
+
+VPts: Visitor Points
+VPen: Visitor Penalties
+VPYds: Visitor Penalty Yards
+HPts: Home Points
+HPen: Home Penalties
+HPYds: Home Penalty Yards
+
+Season Totals file:
+
+HPen: Penalties called on home team
+VPen: Penalties called on visiting team
+HomePct: Percentage of penalties called on home team
+HomeWinPct: Home team winning pct
+Tot: total # of penalties called
+Yds: Total penalty yards
+PenPerG: Total # of penalties per game
+YdsPerG: Penalty Yds Per Game
+League_Average_HomePct: League Average percentage of penalties called on home team
+League_Average_HomeWinPct: League Average home team winning pct
+League_Average_PenPerG: League Average Total # of penalties per game
+League_Average_YdsPerG: League Average Penalty Yds Per Game
+Relative_HomePct: Difference from league percentage of penalties called on home team
+Relative_HomeWinPct: Difference from league home team winning pct
+Relative_PenPerG: Difference from league penalties per game
+Relative YdsPerG: Difference from league penalty yards per game
