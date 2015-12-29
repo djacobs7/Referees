@@ -118,6 +118,77 @@ saveRDS(season_totals,file="~/Desktop/sports analysis/Referees/Data/seasonTotals
 
 
 
+url = "http://www.footballlocks.com/nfl_odds_week_1.shtml#Closing NFL Odds Week 1, 2014"
+a = readHTMLTable(url)
+
+
+
+
+nflpenalties <- function(){
+  root_url = "http://www.nflpenalties.com/"
+  root_table = readHTMLTable(root_url)
+  
+  
+  nfl_teams = c("buffalo-bills",
+                "tampa-bay-buccaneers",
+                "oakland-raiders",
+                "new-orleans-saints",
+                "miami-dolphins",
+                "baltimore-ravens",
+                "cleveland-browns",
+                "st-louis-rams",
+                "seattle-seahawks",
+                "san-diego-chargers",
+                "denver-broncos",
+                "dallas-cowboys",
+                "san-francisco-49ers",
+                "indianapolis-colts",
+                "washington-redskins",
+                "philadelphia-eagles",
+                "cincinnati-bengals",
+                "new-york-giants",
+                "detroit-lions",
+                "kansas-city-chiefs",
+                "jacksonville-jaguars",
+                "houston-texans",
+                "chicago-bears",
+                "green-bay-packers",
+                "carolina-panthers",
+                "atlanta-falcons",
+                "new-york-jets",
+                "new-england-patriots",
+                "arizona-cardinals",
+                "tennessee-titans",
+                "pittsburgh-steelers",
+                "minnesota-vikings")
+  
+  year = seq(2009:2015) + 2008 
+  
+  url_table = expand.grid(year, nfl_teams  ) %>% 
+    rename( year = Var1, team = Var2 ) %>%
+    mutate( url = paste0("http://www.nflpenalties.com/team/", team , "?year=", year, "&view=log" ))
+
+  out = data.frame()
+  
+
+  for ( i in 1:nrow(url_table) ){
+    url = url_table[i, 'url']
+    team = url_table[i, 'team']
+    
+    t = readHTMLTable(url) 
+    t = as.data.frame(t)
+    t = t %>% mutate(team = team)
+    
+    out = rbind( out, t)
+  }  
+
+  
+
+  saveRDS(out,file=  localPath( "Data/penalties.Rda"))
+  
+  
+}
+
 
 
 

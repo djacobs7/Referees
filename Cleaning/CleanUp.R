@@ -12,11 +12,16 @@ localPath <- function(path){
 gameLogsRaw=readRDS(localPath("/Data/gameLogs.Rda"))
 seasonTotalsRaw=readRDS(localPath("/Data/seasonTotals.Rda"))
 
+penaltiesRaw=readRDS(localPath("/Data/penalties.Rda"))
+
 
 cleanupGameLogs <- function( gameLogs ){
   result = gameLogs %>%
     separate( Game, into=c('away', 'home'), sep=' @ ' ) %>% #tidyr function sepearate.  Take a factor variable (game), turn it into two columns [away and home]
-    rename( name = nameVec, date = Year) #dplyr function.  rename the nameVec column to name
+    rename( name = nameVec, date = Year) %>% #dplyr function.  rename the nameVec column to name
+    separate( home, into=c('home', 'is_playoff'), sep='\\*', drop = TRUE ) %>%
+    mutate( is_playoff = ifelse( is.na( is_playoff), FALSE, TRUE ))
+    
   result$away = as.factor(result$away)
   result$home = as.factor(result$home)
   
@@ -66,6 +71,14 @@ cleanupSeasonTotals <- function( seasonTotals ){
   result
 }
 
+cleanupPenalties <- function( penaltiesRaw ){
+
+  result = penaltiesRaw
+  names(result) =  gsub( "NULL.", "", names(t ) )
+  
+  result
+}
+
 gameLogs = cleanupGameLogs( gameLogsRaw )
 seasonTotals = cleanupSeasonTotals( seasonTotalsRaw )
-
+penalties = cleanupPenalties(penaltiesRaw )
